@@ -1,3 +1,23 @@
 bitexpert_sylius_twofactor:
   admin:
+    form:
+      2fa: Enable 2FA
+      2fa_help: Activating this checkbox will trigger the 2FA setup flow
+      2fa_headline: 2FA Setup
     title: Administrator 2FA
+    2fa_setup:
+      success: 2FA enabled successfully.
+      failed: Verification code invalid. 2FA could not be enabled.
+      previous: Back
+      next: Next
+      finish: Finish
+      steps:
+        install:
+          label: "Step 1: Install Authenticator App"
+          headline: Download Google Authenticator App
+          aria-label: Download Apps
+        qr_code:
+          label: "Step 2: Scan QR code to initialize"
+        verify_qr_code:
+          label: "Step 3: Verify installation"
+          headline: Enter the verification code

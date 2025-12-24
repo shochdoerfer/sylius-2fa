@@ -14,3 +14,8 @@ sylius_twig_hooks:
         enabled: false
       title_block:
         enabled: false
+
+    'sylius_admin.bitexpert_sylius_twofactor.show.content':
+      main:
+        template: '@BitExpertSyliusTwoFactorAuthPlugin/admin/two_factor_setup/main.html.twig'
+        priority: 100

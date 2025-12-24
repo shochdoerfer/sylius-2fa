@@ -5,3 +5,9 @@ bitexpert_sylius_2fa_admin_setup_2fa:
   methods: [ GET, POST, PUT ]
   defaults:
     _controller: 'BitExpert\SyliusTwoFactorAuthPlugin\Controller\Admin\TwoFactorController::setup'
+
+bitexpert_sylius_2fa_admin_setup_2fa_qr_code_google:
+  path: /admin/setup-2fa/qr-code/google
+  methods: [ GET ]
+  defaults:
+    _controller: 'BitExpert\SyliusTwoFactorAuthPlugin\Controller\Admin\TwoFactorController::displayGoogleAuthenticatorQrCode'

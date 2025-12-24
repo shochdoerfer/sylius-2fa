@@ -8,6 +8,8 @@
         <service id="BitExpert\SyliusTwoFactorAuthPlugin\EventSubscriber\AdminUserActivateTwoFactor"
                  class="BitExpert\SyliusTwoFactorAuthPlugin\EventSubscriber\AdminUserActivateTwoFactor">
             <argument type="service" id="router" />
+            <argument type="service" id="scheb_two_factor.security.google_authenticator" />
+            <argument type="service" id="sylius.repository.admin_user" />
             <tag name="kernel.event_subscriber" />
         </service>
     </services>

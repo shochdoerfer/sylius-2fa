@@ -5,6 +5,16 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
+        <service id="BitExpert\SyliusTwoFactorAuthPlugin\Form\DataTransformer\DigitsToStringTransformer"
+                 class="BitExpert\SyliusTwoFactorAuthPlugin\Form\DataTransformer\DigitsToStringTransformer"
+        />
+
+        <service id="BitExpert\SyliusTwoFactorAuthPlugin\Form\Common\CodeType"
+                 class="BitExpert\SyliusTwoFactorAuthPlugin\Form\Common\CodeType">
+            <argument type="service" id="BitExpert\SyliusTwoFactorAuthPlugin\Form\DataTransformer\DigitsToStringTransformer" />
+            <tag name="form.type" />
+        </service>
+
         <service id="BitExpert\SyliusTwoFactorAuthPlugin\Form\Extension\AdminUserTwoFactorFormTypeExtension"
                  class="BitExpert\SyliusTwoFactorAuthPlugin\Form\Extension\AdminUserTwoFactorFormTypeExtension">
             <tag name="form.type_extension" />

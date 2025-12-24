@@ -1,2 +1,6 @@
 imports:
     - { resource: "twig_hooks/**/*.yaml" }
+
+scheb_two_factor:
+    google:
+        enabled: true

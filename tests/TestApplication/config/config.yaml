@@ -24,3 +24,8 @@ sylius_user:
             user:
                 classes:
                     model: Tests\BitExpert\SyliusTwoFactorAuthPlugin\Entity\User\AdminUser
+
+scheb_two_factor:
+    google:
+        server_name: Sylius TestApplication
+        leeway: 7 # not sure why, but I seem to have a time trift issue locally. This helps to compensate

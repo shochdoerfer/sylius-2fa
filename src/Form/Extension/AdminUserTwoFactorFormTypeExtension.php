@@ -23,7 +23,8 @@ class AdminUserTwoFactorFormTypeExtension extends AbstractTypeExtension
     {
         $builder
             ->add('twoFactorActive', CheckboxType::class, [
-                'label' => 'sylius.form.user.2fa.label',
+                'label' => 'bitexpert_sylius_twofactor.admin.form.2fa',
+                'help' => 'bitexpert_sylius_twofactor.admin.form.2fa_help',
                 'required' => false,
                 'empty_data' => false,
             ])

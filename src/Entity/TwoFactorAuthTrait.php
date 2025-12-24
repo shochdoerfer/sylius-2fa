@@ -49,6 +49,10 @@ trait TwoFactorAuthTrait
 
     public function getGoogleAuthenticatorUsername(): string
     {
+        if ($this->username === null) {
+            return '';
+        }
+
         return $this->username;
     }
 }

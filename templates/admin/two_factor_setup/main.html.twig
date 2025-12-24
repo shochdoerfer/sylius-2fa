@@ -1,0 +1,75 @@
+{% set form = hookable_metadata.context.form %}
+{% set currentStep = form.vars.cursor.currentStep %}
+
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                {{ form_start(form) }}
+                <div class="card">
+                    <div class="card-header">
+                        {{ field_label(form[currentStep]) }}
+                    </div>
+
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                        {% if currentStep == 'install' %}
+                            <h3>{{ 'bitexpert_sylius_twofactor.admin.2fa_setup.steps.install.headline'|trans }}</h3>
+                            <div class="btn-group btn-group-lg" role="group" aria-label="{{ 'bitexpert_sylius_twofactor.admin.2fa_setup.steps.install.aria-label'|trans }}">
+                                <a class="btn btn-outline-primary" href="https://apps.apple.com/app/google-authenticator/id388497605">IPhone</a>
+                                <a class="btn btn-outline-primary" href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2">Android</a>
+                            </div>
+                        {% elseif currentStep == 'qr_code' %}
+                            <img src="{{ path('bitexpert_sylius_2fa_admin_setup_2fa_qr_code_google') }}" alt=""/>
+                        {% elseif currentStep == 'verify_qr_code' %}
+                            <h3>{{ 'bitexpert_sylius_twofactor.admin.2fa_setup.steps.verify_qr_code.headline'|trans }}</h3>
+                            <div class="d-flex gap-2 verification-code">
+                                {% for i in 0..5 %}
+                                    {{ form_widget(form.children.verify_qr_code.children.verification_code[i], {'attr': {'class': 'form-control text-center digit-input', 'maxlength': 1}}) }}
+                                {% endfor %}
+                            </div>
+
+
+                        {% endif %}
+                    </div>
+
+                    <div class="card-footer d-flex">
+                    {% if form.navigator.previous is defined %}
+                        <button type="submit" class="btn btn-primary" id="{{ form.navigator.previous.vars.id }}" name="{{ form.navigator.previous.vars.full_name }}">{{ 'bitexpert_sylius_twofactor.admin.2fa_setup.previous'|trans }}</button>
+                    {% endif %}
+                    {% if form.navigator.next is defined %}
+                        <button type="submit" class="btn btn-primary ms-auto" id="{{ form.navigator.next.vars.id }}" name="{{ form.navigator.next.vars.full_name }}">{{ 'bitexpert_sylius_twofactor.admin.2fa_setup.next'|trans }}</button>
+                    {% elseif form.navigator.finish is defined %}
+                        <button type="submit" class="btn btn-primary ms-auto" id="{{ form.navigator.finish.vars.id }}" name="{{ form.navigator.finish.vars.full_name }}">{{ 'bitexpert_sylius_twofactor.admin.2fa_setup.finish'|trans }}</button>
+                    {% endif %}
+                    </div>
+                </div>
+
+                {{ form_row(form._token) }}
+                {{ form_end(form, {render_rest: false}) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Extract to separate script later -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const containers = document.querySelectorAll('.verification-code');
+    containers.forEach(container => {
+        const inputs = container.querySelectorAll('.digit-input');
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', () => {
+                if (input.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && input.value === '' && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+        });
+    });
+});
+</script>

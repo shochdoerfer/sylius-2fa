@@ -17,4 +17,14 @@ use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 interface TwoFactorAuthInterface extends TwoFactorInterface
 {
     public function isTwoFactorActive(): bool;
+
+    public function setTwoFactorActive(bool $twoFactorActive): void;
+
+    public function getGoogleAuthenticatorSecret(): ?string;
+
+    public function setGoogleAuthenticatorSecret(?string $googleAuthenticatorSecret): void;
+
+    public function isGoogleAuthenticatorEnabled(): bool;
+
+    public function getGoogleAuthenticatorUsername(): string;
 }
