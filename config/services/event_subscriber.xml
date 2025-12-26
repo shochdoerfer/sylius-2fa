@@ -12,5 +12,10 @@
             <argument type="service" id="sylius.repository.admin_user" />
             <tag name="kernel.event_subscriber" />
         </service>
+
+        <service id="BitExpert\SyliusTwoFactorAuthPlugin\EventSubscriber\TwoFactorAuthenticationLoginAttempt"
+                 class="BitExpert\SyliusTwoFactorAuthPlugin\EventSubscriber\TwoFactorAuthenticationLoginAttempt">
+            <tag name="kernel.event_subscriber" />
+        </service>
     </services>
 </container>

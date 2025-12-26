@@ -1,0 +1,53 @@
+{% set checkPathUrl = hookable_metadata.context.checkPathUrl|default(null)  %}
+{% set checkPathRoute = hookable_metadata.context.checkPathRoute|default(null)  %}
+{% set authenticationError = hookable_metadata.context.authenticationError|default(null)  %}
+{% set authenticationErrorData = hookable_metadata.context.authenticationErrorData|default(null) %}
+{% set authCodeParameterName = hookable_metadata.context.authCodeParameterName|default(null)  %}
+{% set authenticationErrorData = hookable_metadata.context.authenticationErrorData|default(null)  %}
+{% set logoutPath = hookable_metadata.context.logoutPath|default(null)  %}
+
+<form action="{{ checkPathUrl ? checkPathUrl: path(checkPathRoute) }}" method="post" class="ui large loadable form" novalidate>
+    <div class="ui left aligned very padded segment">
+        {% if authenticationError %}
+            <div class="alert alert-danger">{{ authenticationError | trans(authenticationErrorData ?? [] , 'SchebTwoFactorBundle') }}</div>
+        {% endif %}
+
+        <div class="mb-3 field">
+            <label for="2fa_code" class="form-label required">{{ 'bitexpert_sylius_twofactor.admin.2fa_login.headline'|trans }}</label>
+            <div class="d-flex gap-2 verification-code">
+                {% for i in 0..5 %}
+                    <input type="text" id="two_factor_verification_code_{{ i }}" name="{{ authCodeParameterName }}_{{ i }}" required="required" maxlength="1" class="form-control text-center digit-input" inputmode="numeric" pattern="[0-9]" {% if i == 0 %}autofocus{% endif %}>
+                {% endfor %}
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn btn-primary w-100">{{ 'bitexpert_sylius_twofactor.admin.2fa_login.login'|trans }}</button>
+        {% if logoutPath %}
+            <a href="{{ logoutPath }}" class="btn btn-primary btn btn-secondary w-100 mt-3">{{ 'bitexpert_sylius_twofactor.admin.2fa_login.back'|trans }}</a>
+        {% endif %}
+        <input type="hidden" name="_csrf_admin_security_token" value="{{ csrf_token('admin_authenticate') }}">
+    </div>
+</form>
+
+<!-- Extract to separate script later -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const containers = document.querySelectorAll('.verification-code');
+        containers.forEach(container => {
+            const inputs = container.querySelectorAll('.digit-input');
+            inputs.forEach((input, index) => {
+                input.addEventListener('input', () => {
+                    if (input.value.length === 1 && index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    }
+                });
+
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && input.value === '' && index > 0) {
+                        inputs[index - 1].focus();
+                    }
+                });
+            });
+        });
+    });
+</script>

@@ -23,3 +23,7 @@ bitexpert_sylius_twofactor:
         verify_qr_code:
           label: "Step 3: Verify installation"
           headline: Enter the verification code
+    2fa_login:
+        headline: Enter the 2FA verification code
+        login: Login
+        back: Back

@@ -1,0 +1,9 @@
+{% extends '@SyliusAdmin/shared/layout/base.html.twig' %}
+
+{% block title %}{{ parent() }} | {{ 'sylius.ui.administration_panel_login'|trans }}{% endblock %}
+
+{% block body_class %}d-flex flex-column{% endblock %}
+
+{% block body %}
+    {% hook 'sylius_admin.bitexpert_sylius_twofactor.login' with { checkPathUrl: checkPathUrl, checkPathRoute: checkPathRoute, authenticationError: authenticationError, authCodeParameterName: authCodeParameterName, authenticationError: authenticationError, authenticationErrorData: authenticationErrorData, logoutPath: logoutPath } %}
+{% endblock %}

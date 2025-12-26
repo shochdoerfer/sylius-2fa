@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace BitExpert\SyliusTwoFactorAuthPlugin\Controller\Admin;
 
+use BitExpert\SyliusTwoFactorAuthPlugin\Entity\TwoFactorAuthInterface;
 use BitExpert\SyliusTwoFactorAuthPlugin\Form\Admin\TwoFactorSetupFormFlowType;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
@@ -20,6 +21,7 @@ use Endroid\QrCode\RoundBlockSizeMode;
 use Endroid\QrCode\Writer\PngWriter;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
 use Sylius\Component\Core\Model\AdminUser;
+use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Sylius\Resource\Metadata\Metadata;
 use Sylius\TwigHooks\Bag\DataBag;
 use Sylius\TwigHooks\Bag\ScalarDataBag;
@@ -36,7 +38,8 @@ final class TwoFactorController extends AbstractController
     public function __construct(
         private readonly HookableMetadataFactoryInterface $hookableMetadataFactory,
         private readonly TokenStorageInterface $tokenStorage,
-        private readonly GoogleAuthenticatorInterface $googleAuthenticator
+        private readonly GoogleAuthenticatorInterface $googleAuthenticator,
+        private UserRepositoryInterface $adminUserRepository,
     ) {
     }
 
@@ -44,6 +47,7 @@ final class TwoFactorController extends AbstractController
     {
         $metadata = Metadata::fromAliasAndConfiguration('sylius.admin_user', ['driver' => 'doctrine/orm']);
 
+        /** @var (AdminUser&TwoFactorAuthInterface)|null $resource */
         $resource = $this->tokenStorage->getToken()?->getUser();
         if (!$resource instanceof AdminUser) {
             $this->createAccessDeniedException();
@@ -72,7 +76,12 @@ final class TwoFactorController extends AbstractController
                 return $this->redirectToRoute('sylius_admin_dashboard');
             }
 
+            // reset the user's 2FA settings
+            $resource->setGoogleAuthenticatorSecret(null);
+            $resource->setTwoFactorActive(false);
+            $this->adminUserRepository->add($resource);
             $this->addFlash('error', 'bitexpert_sylius_twofactor.admin.2fa_setup.failed');
+            return $this->redirectToRoute('sylius_admin_dashboard');
         }
 
         return $this->render('@BitExpertSyliusTwoFactorAuthPlugin/admin/two_factor_setup.html.twig', [

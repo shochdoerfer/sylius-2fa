@@ -1,13 +1,21 @@
 # Admin routes
 
 bitexpert_sylius_2fa_admin_setup_2fa:
-  path: /admin/setup-2fa
+  path: /setup-2fa
   methods: [ GET, POST, PUT ]
   defaults:
     _controller: 'BitExpert\SyliusTwoFactorAuthPlugin\Controller\Admin\TwoFactorController::setup'
 
 bitexpert_sylius_2fa_admin_setup_2fa_qr_code_google:
-  path: /admin/setup-2fa/qr-code/google
+  path: /setup-2fa/qr-code/google
   methods: [ GET ]
   defaults:
     _controller: 'BitExpert\SyliusTwoFactorAuthPlugin\Controller\Admin\TwoFactorController::displayGoogleAuthenticatorQrCode'
+
+bitexpert_sylius_2fa_admin_login:
+  path: /login/2fa-auth
+  defaults:
+    _controller: 'scheb_two_factor.form_controller::form'
+
+bitexpert_sylius_2fa_admin_login_check:
+  path: /login/2fa-auth-check

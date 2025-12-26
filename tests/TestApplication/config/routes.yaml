@@ -1,5 +1,7 @@
-acme_sylius_example_admin:
+bitexpert_sylius_2fa_admin:
     resource: "@BitExpertSyliusTwoFactorAuthPlugin/config/routes/admin.yaml"
+    prefix: /%sylius_admin.path_name%
 
-acme_sylius_example_shop:
+bitexpert_sylius_2fa_shop:
     resource: "@BitExpertSyliusTwoFactorAuthPlugin/config/routes/shop.yaml"
+    prefix: /{_locale}

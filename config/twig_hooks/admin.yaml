@@ -9,6 +9,7 @@ sylius_twig_hooks:
       content:
         template: '@BitExpertSyliusTwoFactorAuthPlugin/admin/admin_user/form/sections/2fa_active.html.twig'
 
+    # 2FA Setup wizard
     'sylius_admin.bitexpert_sylius_twofactor.show.content.header':
       breadcrumbs:
         enabled: false
@@ -19,3 +20,33 @@ sylius_twig_hooks:
       main:
         template: '@BitExpertSyliusTwoFactorAuthPlugin/admin/two_factor_setup/main.html.twig'
         priority: 100
+
+    # 2FA login page
+    'sylius_admin.bitexpert_sylius_twofactor.login':
+      page:
+        template: '@SyliusAdmin/security/common/page.html.twig'
+        priority: 0
+
+    'sylius_admin.bitexpert_sylius_twofactor.login.page':
+      logo:
+        template: '@SyliusAdmin/security/common/logo.html.twig'
+        priority: 100
+      content:
+        template: '@SyliusAdmin/security/common/content.html.twig'
+        priority: 0
+
+    'sylius_admin.bitexpert_sylius_twofactor.login.page.logo':
+      image:
+        template: '@SyliusAdmin/security/common/logo/image.html.twig'
+        priority: 0
+
+    'sylius_admin.bitexpert_sylius_twofactor.login.page.content':
+      header:
+        template: '@SyliusAdmin/security/login/page/content/header.html.twig'
+        priority: 200
+      flashes:
+        template: '@SyliusAdmin/shared/crud/common/content/flashes.html.twig'
+        priority: 100
+      form:
+        template: '@BitExpertSyliusTwoFactorAuthPlugin/admin/security/two_factor/page/content/form.html.twig'
+        priority: 0

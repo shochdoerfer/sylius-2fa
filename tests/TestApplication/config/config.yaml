@@ -28,4 +28,10 @@ sylius_user:
 scheb_two_factor:
     google:
         server_name: Sylius TestApplication
-        leeway: 7 # not sure why, but I seem to have a time trift issue locally. This helps to compensate
+
+security:
+    firewalls:
+        admin:
+            two_factor:
+                auth_form_path: bitexpert_sylius_2fa_admin_login
+                check_path: bitexpert_sylius_2fa_admin_login_check
