@@ -1,3 +1,6 @@
+{% set showTwoFactorDialog = hookable_metadata.context.can_configure_2fa|default(false)  %}
+
+{% if showTwoFactorDialog %}
 <div class="card mb-3">
     <div class="card-header">
         <div class="card-title">
@@ -8,3 +11,4 @@
         {% hook '2fa' %}
     </div>
 </div>
+{% endif %}

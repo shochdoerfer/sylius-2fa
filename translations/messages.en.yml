@@ -1,9 +1,10 @@
 bitexpert_sylius_twofactor:
   admin:
     form:
-      2fa: Enable 2FA
-      2fa_help: Activating this checkbox will trigger the 2FA setup flow
       2fa_headline: 2FA Setup
+      google:
+        activate: Activate Google Auth
+        disable: Disable Google Auth
     grid:
       2fa: 2FA Enabled
     title: Administrator 2FA
