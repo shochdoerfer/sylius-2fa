@@ -14,7 +14,7 @@ namespace BitExpert\SyliusTwoFactorAuthPlugin\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 
-class DigitsToStringTransformer implements DataTransformerInterface
+class VerificationCodeTransformer implements DataTransformerInterface
 {
     public function transform($value): array
     {

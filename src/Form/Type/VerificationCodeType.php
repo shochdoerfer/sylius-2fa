@@ -10,17 +10,17 @@
  */
 declare(strict_types=1);
 
-namespace BitExpert\SyliusTwoFactorAuthPlugin\Form\Common;
+namespace BitExpert\SyliusTwoFactorAuthPlugin\Form\Type;
 
-use BitExpert\SyliusTwoFactorAuthPlugin\Form\DataTransformer\DigitsToStringTransformer;
+use BitExpert\SyliusTwoFactorAuthPlugin\Form\DataTransformer\VerificationCodeTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-final class CodeType extends AbstractType
+final class VerificationCodeType extends AbstractType
 {
     public function __construct(
-        private readonly DigitsToStringTransformer $transformer
+        private readonly VerificationCodeTransformer $transformer
     ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options)

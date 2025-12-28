@@ -23,7 +23,7 @@
 
         <button type="submit" class="btn btn-primary btn btn-primary w-100">{{ 'bitexpert_sylius_twofactor.admin.2fa_login.login'|trans }}</button>
         {% if logoutPath %}
-            <a href="{{ logoutPath }}" class="btn btn-primary btn btn-secondary w-100 mt-3">{{ 'bitexpert_sylius_twofactor.admin.2fa_login.back'|trans }}</a>
+            <a href="{{ logoutPath }}" class="btn btn-secondary w-100 mt-3">{{ 'bitexpert_sylius_twofactor.admin.2fa_login.back'|trans }}</a>
         {% endif %}
         <input type="hidden" name="_csrf_admin_security_token" value="{{ csrf_token('admin_authenticate') }}">
     </div>

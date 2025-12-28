@@ -10,17 +10,17 @@
  */
 declare(strict_types=1);
 
-namespace BitExpert\SyliusTwoFactorAuthPlugin\Form\Admin;
+namespace BitExpert\SyliusTwoFactorAuthPlugin\Form\Type\Google;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SetupQrCodeFormType extends AbstractType
+class InstallAuthenticatorFormType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'label' => 'bitexpert_sylius_twofactor.admin.2fa_setup.steps.qr_code.label',
+            'label' => 'bitexpert_sylius_twofactor.2fa_setup.google.steps.install.label',
         ]);
     }
 }

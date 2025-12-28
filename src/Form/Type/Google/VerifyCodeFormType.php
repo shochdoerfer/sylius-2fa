@@ -10,18 +10,18 @@
  */
 declare(strict_types=1);
 
-namespace BitExpert\SyliusTwoFactorAuthPlugin\Form\Admin;
+namespace BitExpert\SyliusTwoFactorAuthPlugin\Form\Type\Google;
 
-use BitExpert\SyliusTwoFactorAuthPlugin\Form\Common\CodeType;
+use BitExpert\SyliusTwoFactorAuthPlugin\Form\Type\VerificationCodeType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class VerifyQrCodeFormType extends AbstractType
+class VerifyCodeFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('verification_code', CodeType::class, [
+        $builder->add('verification_code', VerificationCodeType::class, [
             'required' => true,
         ]);
     }
@@ -29,7 +29,7 @@ class VerifyQrCodeFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'label' => 'bitexpert_sylius_twofactor.admin.2fa_setup.steps.verify_qr_code.label',
+            'label' => 'bitexpert_sylius_twofactor.2fa_setup.google.steps.verify_code.label',
         ]);
     }
 }

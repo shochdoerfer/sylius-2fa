@@ -16,20 +16,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait TwoFactorAuthTrait
 {
-    #[ORM\Column(name: '2fa_active', type: 'boolean', nullable: false, options: ['default' => false])]
-    private bool $twoFactorActive = false;
-
     #[ORM\Column(name: 'google_authenticator_secret', type: 'string', nullable: true)]
     private ?string $googleAuthenticatorSecret;
 
     public function isTwoFactorActive(): bool
     {
-        return $this->twoFactorActive;
-    }
-
-    public function setTwoFactorActive(bool $twoFactorActive): void
-    {
-        $this->twoFactorActive = $twoFactorActive;
+        return $this->isGoogleAuthenticatorEnabled();
     }
 
     public function getGoogleAuthenticatorSecret(): ?string

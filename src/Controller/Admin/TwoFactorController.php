@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace BitExpert\SyliusTwoFactorAuthPlugin\Controller\Admin;
 
 use BitExpert\SyliusTwoFactorAuthPlugin\Entity\TwoFactorAuthInterface;
-use BitExpert\SyliusTwoFactorAuthPlugin\Form\Admin\TwoFactorSetupFormFlowType;
+use BitExpert\SyliusTwoFactorAuthPlugin\Form\Type\Google\TwoFactorSetupFormFlowType;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
@@ -31,10 +31,13 @@ use Sylius\TwigHooks\Hookable\Metadata\HookableMetadataFactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 final class TwoFactorController extends AbstractController
 {
+    private const AUTH_SECRET_SESSION_KEY = 'googleAuthSecret';
+
     public function __construct(
         private readonly HookableMetadataFactoryInterface $hookableMetadataFactory,
         private readonly TokenStorageInterface $tokenStorage,
@@ -71,16 +74,21 @@ final class TwoFactorController extends AbstractController
             $data = $flow->getData();
             $code = $data['verify_qr_code']['verification_code'] ?? '';
 
+            $authenticatorSecret = $request->getSession()->get(self::AUTH_SECRET_SESSION_KEY);
+            if ($authenticatorSecret === null) {
+                $this->createAccessDeniedException();
+            }
+
+            $resource->setGoogleAuthenticatorSecret($authenticatorSecret);
             if ($this->googleAuthenticator->checkCode($resource, $code)) {
-                $this->addFlash('success', 'bitexpert_sylius_twofactor.admin.2fa_setup.success');
+                // check ok, persist the secret in the user object
+                $this->adminUserRepository->add($resource);
+
+                $this->addFlash('success', 'bitexpert_sylius_twofactor.2fa_setup.success');
                 return $this->redirectToRoute('sylius_admin_dashboard');
             }
 
-            // reset the user's 2FA settings
-            $resource->setGoogleAuthenticatorSecret(null);
-            $resource->setTwoFactorActive(false);
-            $this->adminUserRepository->add($resource);
-            $this->addFlash('error', 'bitexpert_sylius_twofactor.admin.2fa_setup.failed');
+            $this->addFlash('error', 'bitexpert_sylius_twofactor.2fa_setup.failed');
             return $this->redirectToRoute('sylius_admin_dashboard');
         }
 
@@ -92,12 +100,16 @@ final class TwoFactorController extends AbstractController
         ]);
     }
 
-    public function displayGoogleAuthenticatorQrCode(): Response
+    public function displayGoogleAuthenticatorQrCode(Request $request): Response
     {
         $user = $this->tokenStorage->getToken()?->getUser();
-        /*if (!($user instanceof TwoFactorAuthInterface)) {
+        if (!($user instanceof TwoFactorAuthInterface)) {
             throw new NotFoundHttpException('Cannot display QR code');
-        }*/
+        }
+
+        // generate secret to display the QR code for. Persist it in the session to be able to verify the code later
+        $user->setGoogleAuthenticatorSecret($this->googleAuthenticator->generateSecret());
+        $request->getSession()->set(self::AUTH_SECRET_SESSION_KEY, $user->getGoogleAuthenticatorSecret());
 
         $builder = new Builder(
             writer: new PngWriter(),

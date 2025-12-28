@@ -7,7 +7,12 @@ bitexpert_sylius_twofactor:
     grid:
       2fa: 2FA Enabled
     title: Administrator 2FA
-    2fa_setup:
+    2fa_login:
+        headline: Enter the 2FA verification code
+        login: Login
+        back: Back
+  2fa_setup:
+    google:
       success: 2FA enabled successfully.
       failed: Verification code invalid. 2FA could not be enabled.
       previous: Back
@@ -20,10 +25,6 @@ bitexpert_sylius_twofactor:
           aria-label: Download Apps
         qr_code:
           label: "Step 2: Scan QR code to initialize"
-        verify_qr_code:
+        verify_code:
           label: "Step 3: Verify installation"
           headline: Enter the verification code
-    2fa_login:
-        headline: Enter the 2FA verification code
-        login: Login
-        back: Back

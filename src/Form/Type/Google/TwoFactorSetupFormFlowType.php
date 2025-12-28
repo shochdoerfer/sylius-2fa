@@ -10,7 +10,7 @@
  */
 declare(strict_types=1);
 
-namespace BitExpert\SyliusTwoFactorAuthPlugin\Form\Admin;
+namespace BitExpert\SyliusTwoFactorAuthPlugin\Form\Type\Google;
 
 use Symfony\Component\Form\Flow\AbstractFlowType;
 use Symfony\Component\Form\Flow\FormFlowBuilderInterface;
@@ -23,7 +23,7 @@ final class TwoFactorSetupFormFlowType extends AbstractFlowType
     {
         $builder->addStep('install', InstallAuthenticatorFormType::class);
         $builder->addStep('qr_code', SetupQrCodeFormType::class);
-        $builder->addStep('verify_qr_code', VerifyQrCodeFormType::class);
+        $builder->addStep('verify_qr_code', VerifyCodeFormType::class);
         $builder->add('navigator', NavigatorFlowType::class);
     }
 
