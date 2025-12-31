@@ -38,6 +38,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 final class TwoFactorController extends AbstractController
 {
     private const AUTH_SECRET_SESSION_KEY = 'googleAuthSecret';
+
     private const AUTH_EMAIL_SESSION_KEY = 'emailAuthCode';
 
     public function __construct(
@@ -88,10 +89,12 @@ final class TwoFactorController extends AbstractController
                 $this->adminUserRepository->add($resource);
 
                 $this->addFlash('success', 'bitexpert_sylius_twofactor.2fa_setup.success');
+
                 return $this->redirectToRoute('sylius_admin_dashboard');
             }
 
             $this->addFlash('error', 'bitexpert_sylius_twofactor.2fa_setup.failed');
+
             return $this->redirectToRoute('sylius_admin_dashboard');
         }
 
@@ -100,7 +103,7 @@ final class TwoFactorController extends AbstractController
             'metadata' => $metadata,
             'resource' => $resource,
             'form' => $flow->getStepForm(),
-            'type' => 'google'
+            'type' => 'google',
         ]);
     }
 
@@ -127,6 +130,7 @@ final class TwoFactorController extends AbstractController
         );
 
         $result = $builder->build();
+
         return new Response($result->getString(), 200, ['Content-Type' => 'image/png']);
     }
 
@@ -175,10 +179,12 @@ final class TwoFactorController extends AbstractController
                 $this->adminUserRepository->add($resource);
 
                 $this->addFlash('success', 'bitexpert_sylius_twofactor.2fa_setup.success');
+
                 return $this->redirectToRoute('sylius_admin_dashboard');
             }
 
             $this->addFlash('error', 'bitexpert_sylius_twofactor.2fa_setup.failed');
+
             return $this->redirectToRoute('sylius_admin_dashboard');
         }
 
@@ -187,7 +193,7 @@ final class TwoFactorController extends AbstractController
             'metadata' => $metadata,
             'resource' => $resource,
             'form' => $flow->getStepForm(),
-            'type' => 'email'
+            'type' => 'email',
         ]);
     }
 }

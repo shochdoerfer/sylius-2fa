@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace BitExpert\SyliusTwoFactorAuthPlugin\Entity;
 
-use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface as GoogleTwoFactorInterface;
 use Scheb\TwoFactorBundle\Model\Email\TwoFactorInterface as EmailTwoFactorInterface;
+use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface as GoogleTwoFactorInterface;
 
 interface TwoFactorAuthInterface extends GoogleTwoFactorInterface, EmailTwoFactorInterface
 {

@@ -20,12 +20,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 final class VerificationCodeType extends AbstractType
 {
     public function __construct(
-        private readonly VerificationCodeTransformer $transformer
-    ) {}
+        private readonly VerificationCodeTransformer $transformer,
+    ) {
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        for ($i = 0; $i < 6; $i++) {
+        for ($i = 0; $i < 6; ++$i) {
             $builder->add((string) $i, TextType::class, [
                 'attr' => [
                     'maxlength' => 1,

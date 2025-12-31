@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace BitExpert\SyliusTwoFactorAuthPlugin\Controller\Shop;
 
-use BitExpert\SyliusTwoFactorAuthPlugin\Entity\TwoFactorAuthInterface;
 use BitExpert\SyliusTwoFactorAuthPlugin\Form\Type\Email\EmailSetupFormFlow;
 use BitExpert\SyliusTwoFactorAuthPlugin\Form\Type\Google\GoogleSetupFormFlowType;
 use Endroid\QrCode\Builder\Builder;
@@ -22,10 +21,7 @@ use Endroid\QrCode\RoundBlockSizeMode;
 use Endroid\QrCode\Writer\PngWriter;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Email\Generator\CodeGeneratorInterface;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
-use Sylius\Component\Core\Model\AdminUser;
-use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
-use Sylius\Component\Core\Repository\CustomerRepositoryInterface;
 use Sylius\Resource\Doctrine\Persistence\RepositoryInterface;
 use Sylius\Resource\Metadata\Metadata;
 use Sylius\TwigHooks\Bag\DataBag;
@@ -36,7 +32,6 @@ use Sylius\TwigHooks\Hookable\Metadata\HookableMetadataFactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 final class TwoFactorController extends AbstractController
@@ -93,10 +88,12 @@ final class TwoFactorController extends AbstractController
                 $this->shopUserRepository->add($resource);
 
                 $this->addFlash('success', 'bitexpert_sylius_twofactor.2fa_setup.success');
+
                 return $this->redirectToRoute('bitexpert_sylius_2fa_shop_account_2fa_overview');
             }
 
             $this->addFlash('error', 'bitexpert_sylius_twofactor.2fa_setup.failed');
+
             return $this->redirectToRoute('bitexpert_sylius_2fa_shop_account_2fa_overview');
         }
 
@@ -105,7 +102,7 @@ final class TwoFactorController extends AbstractController
             'metadata' => $metadata,
             'resource' => $resource,
             'form' => $flow->getStepForm(),
-            'type' => 'google'
+            'type' => 'google',
         ]);
     }
 
@@ -132,6 +129,7 @@ final class TwoFactorController extends AbstractController
         );
 
         $result = $builder->build();
+
         return new Response($result->getString(), 200, ['Content-Type' => 'image/png']);
     }
 
@@ -180,10 +178,12 @@ final class TwoFactorController extends AbstractController
                 $this->shopUserRepository->add($resource);
 
                 $this->addFlash('success', 'bitexpert_sylius_twofactor.2fa_setup.success');
+
                 return $this->redirectToRoute('bitexpert_sylius_2fa_shop_account_2fa_overview');
             }
 
             $this->addFlash('error', 'bitexpert_sylius_twofactor.2fa_setup.failed');
+
             return $this->redirectToRoute('bitexpert_sylius_2fa_shop_account_2fa_overview');
         }
 
@@ -192,7 +192,7 @@ final class TwoFactorController extends AbstractController
             'metadata' => $metadata,
             'resource' => $resource,
             'form' => $flow->getStepForm(),
-            'type' => 'email'
+            'type' => 'email',
         ]);
     }
 }

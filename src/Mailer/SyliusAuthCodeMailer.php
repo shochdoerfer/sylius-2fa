@@ -23,7 +23,7 @@ final readonly class SyliusAuthCodeMailer implements AuthCodeMailerInterface
     public function __construct(
         private SenderInterface $sender,
         private ChannelContextInterface $channelContext,
-        private LocaleContextInterface $localeContext
+        private LocaleContextInterface $localeContext,
     ) {
     }
 
@@ -32,7 +32,7 @@ final readonly class SyliusAuthCodeMailer implements AuthCodeMailerInterface
         $this->sender->send(
             'bitexpert_sylius_2fa_auth_code',
             [
-                $user->getEmail()
+                $user->getEmail(),
             ],
             [
                 'authCode' => $user->getEmailAuthCode(),

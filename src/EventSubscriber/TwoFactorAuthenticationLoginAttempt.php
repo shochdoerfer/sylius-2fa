@@ -30,10 +30,10 @@ final readonly class TwoFactorAuthenticationLoginAttempt implements EventSubscri
         // @TODO: Make configurable
         $authCodeParamName = '_auth_code';
         $request = $event->getRequest();
-        
+
         if (!$request->request->has($authCodeParamName)) {
             $authCodeParam = [];
-            for ($i =0; $i < 6; $i++) {
+            for ($i = 0; $i < 6; ++$i) {
                 $authCodeParamPart = sprintf('%s_%s', $authCodeParamName, $i);
                 if (!$request->request->has($authCodeParamPart)) {
                     continue;

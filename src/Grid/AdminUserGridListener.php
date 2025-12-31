@@ -28,7 +28,7 @@ final readonly class AdminUserGridListener
             'vars' => [
                 'th_class' => 'w-1 text-center',
                 'td_class' => 'text-center',
-            ]
+            ],
         ]);
 
         $grid->addField($isActive2Fa);

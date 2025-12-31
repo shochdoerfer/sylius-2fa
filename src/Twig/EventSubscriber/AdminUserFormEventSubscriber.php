@@ -20,7 +20,7 @@ use Symfony\UX\TwigComponent\Event\PreRenderEvent;
 
 final readonly class AdminUserFormEventSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private TokenStorageInterface $tokenStorage,)
+    public function __construct(private TokenStorageInterface $tokenStorage)
     {
     }
 
