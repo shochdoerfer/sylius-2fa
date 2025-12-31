@@ -1,1 +1,37 @@
-# Shop routes
+bitexpert_sylius_2fa_shop_account_2fa_overview:
+  path: /account/2fa
+  methods: [GET]
+  defaults:
+    _controller: sylius.controller.customer::showAction
+    _sylius:
+      template: "@BitExpertSyliusTwoFactorAuthPlugin/shop/account/2fa_overview.html.twig"
+      repository:
+        method: find
+        arguments:
+          - "expr:service('sylius.context.customer').getCustomer()"
+
+bitexpert_sylius_2fa_shop_account_setup_2fa_google:
+  path: /account/setup-2fa/google
+  methods: [ GET, POST, PUT ]
+  defaults:
+    _controller: 'BitExpert\SyliusTwoFactorAuthPlugin\Controller\Shop\TwoFactorController::setupGoogleAuth'
+
+bitexpert_sylius_2fa_shop_account_setup_2fa_qr_code_google:
+  path: /account/setup-2fa/google/qr-code
+  methods: [ GET ]
+  defaults:
+    _controller: 'BitExpert\SyliusTwoFactorAuthPlugin\Controller\Shop\TwoFactorController::displayGoogleAuthenticatorQrCode'
+
+bitexpert_sylius_2fa_shop_account_setup_2fa_email:
+  path: /account/setup-2fa/email
+  methods: [ GET, POST, PUT ]
+  defaults:
+    _controller: 'BitExpert\SyliusTwoFactorAuthPlugin\Controller\Shop\TwoFactorController::setupEmailAuth'
+
+bitexpert_sylius_2fa_shop_login:
+  path: /login/2fa-auth
+  defaults:
+    _controller: 'scheb_two_factor.form_controller::form'
+
+bitexpert_sylius_2fa_shop_login_check:
+  path: /login/2fa-auth-check

@@ -15,6 +15,19 @@ bitexpert_sylius_twofactor:
         headline: Enter the 2FA verification code
         login: Login
         back: Back
+  shop:
+    menu:
+      label: 2FA Configuration
+    form:
+      2fa_headline: 2FA Setup
+      2fa_active: 2FA enabled
+      2fa_inactive: 2FA not active
+      google:
+        activate: Activate Google Auth
+        disable: Disable Google Auth
+      email:
+        activate: Activate Email Auth
+        disable: Disable Email Auth
   2fa_setup:
     success: 2FA enabled successfully.
     failed: Verification code invalid. 2FA could not be enabled.

@@ -1,0 +1,24 @@
+{% set customer = hookable_metadata.context.customer %}
+
+<div class="row mb-3">
+    <div class="col-12 col-sm-auto mb-2 order-sm-1">
+    {% if customer.getUser().isTwoFactorActive %}
+        <span class="badge text-bg-success">{{ 'bitexpert_sylius_twofactor.shop.form.2fa_active'|trans }}</span>
+    {% else %}
+        <span class="badge text-bg-danger">{{ 'bitexpert_sylius_twofactor.shop.form.2fa_inactive'|trans }}</span>
+    {% endif %}
+    </div>
+    <div class="col-12 col-sm">
+        {% if customer.getUser().isGoogleAuthenticatorEnabled() == false %}
+            <a href="{{ path('bitexpert_sylius_2fa_shop_account_setup_2fa_google') }}" class="btn btn-primary mt-3 me-2">{{ 'bitexpert_sylius_twofactor.shop.form.google.activate'|trans }}</a>
+        {% else %}
+            <a href="#" class="btn btn-secondary mt-3 me-2">{{ 'bitexpert_sylius_twofactor.admin.form.google.disable'|trans }}</a>
+        {% endif %}
+
+        {% if customer.getUser().isEmailAuthEnabled() == false %}
+            <a href="{{ path('bitexpert_sylius_2fa_shop_account_setup_2fa_email') }}" class="btn btn-primary mt-3">{{ 'bitexpert_sylius_twofactor.shop.form.email.activate'|trans }}</a>
+        {% else %}
+            <a href="#" class="btn btn-secondary mt-3">{{ 'bitexpert_sylius_twofactor.admin.form.email.disable'|trans }}</a>
+        {% endif %}
+    </div>
+</div>

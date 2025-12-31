@@ -1,0 +1,7 @@
+{% extends '@SyliusShop/account/common/index.html.twig' %}
+
+{% set prefixes = [
+    'sylius_shop.bitexpert_sylius_twofactor.' ~ type,
+] %}
+
+{% block title %}{{ 'bitexpert_sylius_twofactor.shop.form.2fa_headline'|trans }} | {{ parent() }}{% endblock %}

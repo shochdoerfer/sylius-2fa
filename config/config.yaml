@@ -12,9 +12,9 @@ scheb_two_factor:
         enabled: true
         digits: 6
         leeway: 25
-        template: '@BitExpertSyliusTwoFactorAuthPlugin/admin/security/two_factor.html.twig'
+        form_renderer: 'BitExpert\SyliusTwoFactorAuthPlugin\Form\Renderer\FirewallAwareFormRenderer'
     email:
         enabled: true
         digits: 6
-        template: '@BitExpertSyliusTwoFactorAuthPlugin/admin/security/two_factor.html.twig'
         mailer: 'BitExpert\SyliusTwoFactorAuthPlugin\Mailer\SyliusAuthCodeMailer'
+        form_renderer: 'BitExpert\SyliusTwoFactorAuthPlugin\Form\Renderer\FirewallAwareFormRenderer'

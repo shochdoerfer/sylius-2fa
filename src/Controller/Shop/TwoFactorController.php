@@ -10,7 +10,7 @@
  */
 declare(strict_types=1);
 
-namespace BitExpert\SyliusTwoFactorAuthPlugin\Controller\Admin;
+namespace BitExpert\SyliusTwoFactorAuthPlugin\Controller\Shop;
 
 use BitExpert\SyliusTwoFactorAuthPlugin\Entity\TwoFactorAuthInterface;
 use BitExpert\SyliusTwoFactorAuthPlugin\Form\Type\Email\EmailSetupFormFlow;
@@ -23,7 +23,10 @@ use Endroid\QrCode\Writer\PngWriter;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Email\Generator\CodeGeneratorInterface;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
 use Sylius\Component\Core\Model\AdminUser;
-use Sylius\Component\User\Repository\UserRepositoryInterface;
+use Sylius\Component\Core\Model\CustomerInterface;
+use Sylius\Component\Core\Model\ShopUserInterface;
+use Sylius\Component\Core\Repository\CustomerRepositoryInterface;
+use Sylius\Resource\Doctrine\Persistence\RepositoryInterface;
 use Sylius\Resource\Metadata\Metadata;
 use Sylius\TwigHooks\Bag\DataBag;
 use Sylius\TwigHooks\Bag\ScalarDataBag;
@@ -33,16 +36,18 @@ use Sylius\TwigHooks\Hookable\Metadata\HookableMetadataFactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 final class TwoFactorController extends AbstractController
 {
     private const AUTH_SECRET_SESSION_KEY = 'googleAuthSecret';
+
     private const AUTH_EMAIL_SESSION_KEY = 'emailAuthCode';
 
     public function __construct(
         private readonly HookableMetadataFactoryInterface $hookableMetadataFactory,
-        private readonly UserRepositoryInterface $adminUserRepository,
+        private readonly RepositoryInterface $shopUserRepository,
         private readonly GoogleAuthenticatorInterface $googleAuthenticator,
         private readonly CodeGeneratorInterface $codeGenerator,
         private readonly TokenStorageInterface $tokenStorage,
@@ -51,16 +56,16 @@ final class TwoFactorController extends AbstractController
 
     public function setupGoogleAuth(Request $request): Response
     {
-        $metadata = Metadata::fromAliasAndConfiguration('sylius.admin_user', ['driver' => 'doctrine/orm']);
+        $metadata = Metadata::fromAliasAndConfiguration('sylius.shop_user', ['driver' => 'doctrine/orm']);
 
-        /** @var (AdminUser&TwoFactorAuthInterface)|null $resource */
+        /** @var ShopUserInterface|null $resource */
         $resource = $this->tokenStorage->getToken()?->getUser();
-        if (!$resource instanceof TwoFactorAuthInterface) {
+        if (!$resource instanceof ShopUserInterface) {
             throw $this->createAccessDeniedException();
         }
 
-        $hookMetadata = new HookMetadata('admin_user', new DataBag(['applicationName' => 'sylius']));
-        $hookable = new HookableTemplate('admin_user', 'show', '', ['applicationName' => 'sylius'], ['resource_name' => 'admin_user']);
+        $hookMetadata = new HookMetadata('shop_user', new DataBag(['applicationName' => 'sylius']));
+        $hookable = new HookableTemplate('shop_user', 'show', '', ['applicationName' => 'sylius'], ['resource_name' => 'shop_user']);
         $hookableMetadata = $this->hookableMetadataFactory->create(
             $hookMetadata,
             new DataBag(['resource' => $resource]),
@@ -85,17 +90,17 @@ final class TwoFactorController extends AbstractController
             $resource->setGoogleAuthenticatorSecret($authenticatorSecret);
             if ($this->googleAuthenticator->checkCode($resource, $code)) {
                 // check ok, persist the secret in the user object
-                $this->adminUserRepository->add($resource);
+                $this->shopUserRepository->add($resource);
 
                 $this->addFlash('success', 'bitexpert_sylius_twofactor.2fa_setup.success');
-                return $this->redirectToRoute('sylius_admin_dashboard');
+                return $this->redirectToRoute('bitexpert_sylius_2fa_shop_account_2fa_overview');
             }
 
             $this->addFlash('error', 'bitexpert_sylius_twofactor.2fa_setup.failed');
-            return $this->redirectToRoute('sylius_admin_dashboard');
+            return $this->redirectToRoute('bitexpert_sylius_2fa_shop_account_2fa_overview');
         }
 
-        return $this->render('@BitExpertSyliusTwoFactorAuthPlugin/admin/two_factor_setup.html.twig', [
+        return $this->render('@BitExpertSyliusTwoFactorAuthPlugin/shop/two_factor_setup.html.twig', [
             'configuration' => $hookableMetadata->configuration,
             'metadata' => $metadata,
             'resource' => $resource,
@@ -107,7 +112,7 @@ final class TwoFactorController extends AbstractController
     public function displayGoogleAuthenticatorQrCode(Request $request): Response
     {
         $user = $this->tokenStorage->getToken()?->getUser();
-        if (!$user instanceof TwoFactorAuthInterface) {
+        if (!$user instanceof ShopUserInterface) {
             throw $this->createNotFoundException('Cannot display QR code');
         }
 
@@ -132,12 +137,12 @@ final class TwoFactorController extends AbstractController
 
     public function setupEmailAuth(Request $request): Response
     {
-        $metadata = Metadata::fromAliasAndConfiguration('sylius.admin_user', ['driver' => 'doctrine/orm']);
+        $metadata = Metadata::fromAliasAndConfiguration('sylius.shop_user', ['driver' => 'doctrine/orm']);
 
-        /** @var (AdminUser&TwoFactorAuthInterface)|null $resource */
+        /** @var ShopUserInterface|null $resource */
         $resource = $this->tokenStorage->getToken()?->getUser();
-        if (!$resource instanceof TwoFactorAuthInterface) {
-            $this->createAccessDeniedException();
+        if (!$resource instanceof ShopUserInterface) {
+            throw $this->createAccessDeniedException();
         }
 
         if ($request->isMethod('GET')) {
@@ -146,8 +151,8 @@ final class TwoFactorController extends AbstractController
             $request->getSession()->set(self::AUTH_EMAIL_SESSION_KEY, $resource->getEmailAuthCode());
         }
 
-        $hookMetadata = new HookMetadata('admin_user', new DataBag(['applicationName' => 'sylius']));
-        $hookable = new HookableTemplate('admin_user', 'show', '', ['applicationName' => 'sylius'], ['resource_name' => 'admin_user']);
+        $hookMetadata = new HookMetadata('shop_user', new DataBag(['applicationName' => 'sylius']));
+        $hookable = new HookableTemplate('shop_user', 'show', '', ['applicationName' => 'sylius'], ['resource_name' => 'shop_user']);
         $hookableMetadata = $this->hookableMetadataFactory->create(
             $hookMetadata,
             new DataBag(['resource' => $resource]),
@@ -172,17 +177,17 @@ final class TwoFactorController extends AbstractController
             $resource->setEmailAuthCode($authCode);
             if ($code === $resource->getEmailAuthCode()) {
                 // check ok, persist the secret in the user object
-                $this->adminUserRepository->add($resource);
+                $this->shopUserRepository->add($resource);
 
                 $this->addFlash('success', 'bitexpert_sylius_twofactor.2fa_setup.success');
-                return $this->redirectToRoute('sylius_admin_dashboard');
+                return $this->redirectToRoute('bitexpert_sylius_2fa_shop_account_2fa_overview');
             }
 
             $this->addFlash('error', 'bitexpert_sylius_twofactor.2fa_setup.failed');
-            return $this->redirectToRoute('sylius_admin_dashboard');
+            return $this->redirectToRoute('bitexpert_sylius_2fa_shop_account_2fa_overview');
         }
 
-        return $this->render('@BitExpertSyliusTwoFactorAuthPlugin/admin/two_factor_setup.html.twig', [
+        return $this->render('@BitExpertSyliusTwoFactorAuthPlugin/shop/two_factor_setup.html.twig', [
             'configuration' => $hookableMetadata->configuration,
             'metadata' => $metadata,
             'resource' => $resource,

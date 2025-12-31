@@ -1,5 +1,3 @@
-# Admin routes
-
 bitexpert_sylius_2fa_admin_setup_2fa_google:
   path: /setup-2fa/google
   methods: [ GET, POST, PUT ]

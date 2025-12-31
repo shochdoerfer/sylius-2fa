@@ -44,11 +44,11 @@ trait TwoFactorAuthTrait
 
     public function getGoogleAuthenticatorUsername(): string
     {
-        if ($this->username === null) {
-            return '';
+        if (is_string($this->username)) {
+            return $this->username;
         }
 
-        return $this->username;
+        return $this->email;
     }
 
     public function isEmailAuthEnabled(): bool

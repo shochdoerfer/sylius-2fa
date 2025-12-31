@@ -1,2 +1,63 @@
 sylius_twig_hooks:
     hooks:
+        # 2FA configuration pages
+        'sylius_shop.bitexpert_sylius_twofactor.account.dashboard.index.content.main':
+            section:
+                template: '@BitExpertSyliusTwoFactorAuthPlugin/shop/account/dashboard/index/content/main/section.html.twig'
+                priority: 0
+
+        'sylius_shop.bitexpert_sylius_twofactor.account.dashboard.index.content.main.header':
+            title:
+                template: '@BitExpertSyliusTwoFactorAuthPlugin/shop/account/dashboard/index/content/main/header/title.html.twig'
+                priority: 100
+            subtitle:
+                template: '@BitExpertSyliusTwoFactorAuthPlugin/shop/account/dashboard/index/content/main/header/subtitle.html.twig'
+                priority: 0
+
+        'sylius_shop.bitexpert_sylius_twofactor.account.dashboard.index.content.main.section':
+            overview:
+                template: '@BitExpertSyliusTwoFactorAuthPlugin/shop/account/dashboard/index/content/main/section/overview.html.twig'
+                priority: 100
+
+        # 2FA Setup wizard for Google Authenticator
+        'sylius_shop.bitexpert_sylius_twofactor.google.index.content.main':
+            google:
+                template: '@BitExpertSyliusTwoFactorAuthPlugin/shop/two_factor_setup/google.html.twig'
+                priority: 0
+            validation_js:
+                template: '@BitExpertSyliusTwoFactorAuthPlugin/common/validation.html.twig'
+                priority: 0
+
+        'sylius_shop.bitexpert_sylius_twofactor.google.index.content.main.header':
+            title:
+                template: '@BitExpertSyliusTwoFactorAuthPlugin/shop/account/dashboard/index/content/main/header/title.html.twig'
+                priority: 100
+            subtitle:
+                template: '@BitExpertSyliusTwoFactorAuthPlugin/shop/account/dashboard/index/content/main/header/subtitle.html.twig'
+                priority: 0
+
+        # 2FA Setup wizard for Email Auth
+        'sylius_shop.bitexpert_sylius_twofactor.email.index.content.main':
+            email:
+                template: '@BitExpertSyliusTwoFactorAuthPlugin/shop/two_factor_setup/email.html.twig'
+                priority: 0
+            validation_js:
+                template: '@BitExpertSyliusTwoFactorAuthPlugin/common/validation.html.twig'
+                priority: 0
+
+        'sylius_shop.bitexpert_sylius_twofactor.email.index.content.main.header':
+            title:
+                template: '@BitExpertSyliusTwoFactorAuthPlugin/shop/account/dashboard/index/content/main/header/title.html.twig'
+                priority: 100
+            subtitle:
+                template: '@BitExpertSyliusTwoFactorAuthPlugin/shop/account/dashboard/index/content/main/header/subtitle.html.twig'
+                priority: 0
+
+        # 2FA login page
+        'sylius_shop.bitexpert_sylius_twofactor.login':
+            content:
+                template: '@BitExpertSyliusTwoFactorAuthPlugin/admin/security/two_factor/page/content/form.html.twig'
+                priority: 0
+            validation_js:
+                template: '@BitExpertSyliusTwoFactorAuthPlugin/common/validation.html.twig'
+                priority: 0

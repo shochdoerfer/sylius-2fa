@@ -1,0 +1,44 @@
+{% set form = hookable_metadata.context.form %}
+{% set currentStep = form.vars.cursor.currentStep %}
+
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                {{ form_start(form) }}
+                <div class="card">
+                    <div class="card-header">
+                        {{ field_label(form[currentStep]) }}
+                    </div>
+
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                        {% if currentStep == 'install' %}
+                            <h5>{{ 'bitexpert_sylius_twofactor.2fa_setup.email.steps.install.headline'|trans }}</h5>
+                        {% elseif currentStep == 'verify_code' %}
+                            <h5>{{ 'bitexpert_sylius_twofactor.2fa_setup.email.steps.verify_code.headline'|trans }}</h5>
+                            <div class="d-flex gap-2 verification-code">
+                                {% for i in 0..5 %}
+                                    {{ form_widget(form.children.verify_code.children.verification_code[i], {'attr': {'class': 'form-control text-center digit-input', 'maxlength': 1}}) }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="card-footer d-flex px-3">
+                    {% if form.navigator.previous is defined %}
+                        <button type="submit" class="btn btn-primary" id="{{ form.navigator.previous.vars.id }}" name="{{ form.navigator.previous.vars.full_name }}">{{ 'bitexpert_sylius_twofactor.2fa_setup.google.previous'|trans }}</button>
+                    {% endif %}
+                    {% if form.navigator.next is defined %}
+                        <button type="submit" class="btn btn-primary ms-auto" id="{{ form.navigator.next.vars.id }}" name="{{ form.navigator.next.vars.full_name }}">{{ 'bitexpert_sylius_twofactor.2fa_setup.google.next'|trans }}</button>
+                    {% elseif form.navigator.finish is defined %}
+                        <button type="submit" class="btn btn-primary ms-auto" id="{{ form.navigator.finish.vars.id }}" name="{{ form.navigator.finish.vars.full_name }}">{{ 'bitexpert_sylius_twofactor.2fa_setup.google.finish'|trans }}</button>
+                    {% endif %}
+                    </div>
+                </div>
+
+                {{ form_row(form._token) }}
+                {{ form_end(form, {render_rest: false}) }}
+            </div>
+        </div>
+    </div>
+</div>

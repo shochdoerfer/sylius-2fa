@@ -15,5 +15,13 @@
             <tag name="form.type" />
         </service>
 
+        <service id="BitExpert\SyliusTwoFactorAuthPlugin\Form\Renderer\FirewallAwareFormRenderer"
+                 class="BitExpert\SyliusTwoFactorAuthPlugin\Form\Renderer\FirewallAwareFormRenderer">
+            <argument type="service" id="twig"/>
+            <argument type="service" id="security.firewall.map"/>
+            <argument type="string">@BitExpertSyliusTwoFactorAuthPlugin/admin/security/two_factor.html.twig</argument>
+            <argument type="string">@BitExpertSyliusTwoFactorAuthPlugin/shop/security/two_factor.html.twig</argument>
+        </service>
+
     </services>
 </container>

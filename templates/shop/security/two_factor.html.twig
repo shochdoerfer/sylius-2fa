@@ -1,0 +1,23 @@
+{% extends '@SyliusShop/shared/layout/base.html.twig' %}
+
+{% block title %}{{ 'sylius.ui.customer_login'|trans }} | {{ parent() }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center mt-4 mb-5">
+            <div class="col-12 col-md-6">
+                {% hook 'sylius_shop.bitexpert_sylius_twofactor.login' with {
+                    checkPathUrl: checkPathUrl,
+                    checkPathRoute: checkPathRoute,
+                    authenticationError: authenticationError,
+                    authCodeParameterName: authCodeParameterName,
+                    availableTwoFactorProviders: availableTwoFactorProviders,
+                    twoFactorProvider: twoFactorProvider,
+                    authenticationError: authenticationError,
+                    authenticationErrorData: authenticationErrorData,
+                    logoutPath: logoutPath
+                } %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
