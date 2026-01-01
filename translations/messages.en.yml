@@ -29,8 +29,6 @@ bitexpert_sylius_twofactor:
         activate: Activate Email Auth
         disable: Disable Email Auth
   2fa_setup:
-    success: 2FA enabled successfully.
-    failed: Verification code invalid. 2FA could not be enabled.
     google:
       previous: Back
       next: Next

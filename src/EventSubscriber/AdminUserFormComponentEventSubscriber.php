@@ -10,7 +10,7 @@
  */
 declare(strict_types=1);
 
-namespace BitExpert\SyliusTwoFactorAuthPlugin\Twig\EventSubscriber;
+namespace BitExpert\SyliusTwoFactorAuthPlugin\EventSubscriber;
 
 use Sylius\Bundle\UiBundle\Twig\Component\ResourceFormComponent;
 use Sylius\Component\Core\Model\AdminUserInterface;
@@ -18,7 +18,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\UX\TwigComponent\Event\PreRenderEvent;
 
-final readonly class AdminUserFormEventSubscriber implements EventSubscriberInterface
+final readonly class AdminUserFormComponentEventSubscriber implements EventSubscriberInterface
 {
     public function __construct(private TokenStorageInterface $tokenStorage)
     {

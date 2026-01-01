@@ -2,19 +2,19 @@ bitexpert_sylius_2fa_admin_setup_2fa_google:
   path: /setup-2fa/google
   methods: [ GET, POST, PUT ]
   defaults:
-    _controller: 'BitExpert\SyliusTwoFactorAuthPlugin\Controller\Admin\TwoFactorController::setupGoogleAuth'
+    _controller: 'bitexpert_sylius_2fa.controller.admin::setupGoogleAuth'
 
 bitexpert_sylius_2fa_admin_setup_2fa_qr_code_google:
   path: /setup-2fa/google/qr-code
   methods: [ GET ]
   defaults:
-    _controller: 'BitExpert\SyliusTwoFactorAuthPlugin\Controller\Admin\TwoFactorController::displayGoogleAuthenticatorQrCode'
+    _controller: 'bitexpert_sylius_2fa.controller.admin::displayGoogleAuthenticatorQrCode'
 
 bitexpert_sylius_2fa_admin_setup_2fa_email:
   path: /setup-2fa/email
   methods: [ GET, POST, PUT ]
   defaults:
-    _controller: 'BitExpert\SyliusTwoFactorAuthPlugin\Controller\Admin\TwoFactorController::setupEmailAuth'
+    _controller: 'bitexpert_sylius_2fa.controller.admin::setupEmailAuth'
 
 bitexpert_sylius_2fa_admin_login:
   path: /login/2fa-auth
