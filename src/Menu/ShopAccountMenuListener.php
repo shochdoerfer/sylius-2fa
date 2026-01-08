@@ -14,7 +14,7 @@ namespace BitExpert\SyliusTwoFactorAuthPlugin\Menu;
 
 use Sylius\Bundle\UiBundle\Menu\Event\MenuBuilderEvent;
 
-class ShopAccountMenuListener
+final readonly class ShopAccountMenuListener
 {
     private const MENU_ID = 'two_factor_setup';
 
@@ -33,15 +33,26 @@ class ShopAccountMenuListener
         // re-arrange menu items to put the new item after personal information
         $newOrder = [];
         $children = $menu->getChildren();
+        $twoFactorItem = $children[self::MENU_ID] ?? null;
+        
+        // First, add all items except the 2FA item
         foreach ($children as $name => $child) {
             if ($name === self::MENU_ID) {
                 continue;
             }
 
             $newOrder[$name] = $child;
-            if ($name === 'personal_information') {
-                $newOrder[self::MENU_ID] = $children[self::MENU_ID];
+            
+            // Add 2FA item after personal_information
+            if ($name === 'personal_information' && $twoFactorItem !== null) {
+                $newOrder[self::MENU_ID] = $twoFactorItem;
             }
+        }
+        
+        // If 2FA wasn't added after personal_information (e.g., personal_information doesn't exist),
+        // add it at the end if it exists
+        if (!isset($newOrder[self::MENU_ID]) && $twoFactorItem !== null) {
+            $newOrder[self::MENU_ID] = $twoFactorItem;
         }
 
         $menu->reorderChildren(array_keys($newOrder));

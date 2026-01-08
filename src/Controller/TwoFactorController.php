@@ -46,7 +46,7 @@ final class TwoFactorController extends AbstractController
      * @param UserRepositoryInterface<UserInterface> $repository
      * @param class-string $googleFormFlow
      * @param class-string $emailFormFlow
- */
+     */
     public function __construct(
         private readonly HookableMetadataFactoryInterface $hookableMetadataFactory,
         private readonly GoogleAuthenticatorInterface $googleAuthenticator,
