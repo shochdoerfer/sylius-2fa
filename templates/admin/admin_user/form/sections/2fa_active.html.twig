@@ -1,13 +1,21 @@
 {% set resource = hookable_metadata.context.resource %}
 
 {% if resource.isGoogleAuthenticatorEnabled() == false %}
-<a href="{{ path('bitexpert_sylius_2fa_admin_setup_2fa_google') }}" class="btn btn-primary w-100 mt-3">{{ 'bitexpert_sylius_twofactor.admin.form.google.activate'|trans }}</a>
+    <a href="{{ path('bitexpert_sylius_2fa_admin_setup_2fa_google') }}" class="btn btn-primary w-100 mt-3">{{ 'bitexpert_sylius_twofactor.admin.form.google.activate'|trans }}</a>
 {% else %}
-<a href="#" class="btn btn-secondary w-100 mt-3">{{ 'bitexpert_sylius_twofactor.admin.form.google.disable'|trans }}</a>
+    <input type="hidden" name="_google_disable_token" value="{{ csrf_token('disable_2fa_google') }}">
+    <button type="submit"
+            formaction="{{ path('bitexpert_sylius_2fa_admin_account_disable_2fa', {type: 'google'}) }}"
+            formmethod="post"
+            class="btn btn-secondary w-100 mt-3">{{ 'bitexpert_sylius_twofactor.admin.form.google.disable'|trans }}</button>
 {% endif %}
 
 {% if resource.isEmailAuthEnabled() == false %}
-<a href="{{ path('bitexpert_sylius_2fa_admin_setup_2fa_email') }}" class="btn btn-primary w-100 mt-3">{{ 'bitexpert_sylius_twofactor.admin.form.email.activate'|trans }}</a>
+    <a href="{{ path('bitexpert_sylius_2fa_admin_setup_2fa_email') }}" class="btn btn-primary w-100 mt-3">{{ 'bitexpert_sylius_twofactor.admin.form.email.activate'|trans }}</a>
 {% else %}
-<a href="#" class="btn btn-secondary w-100 mt-3">{{ 'bitexpert_sylius_twofactor.admin.form.email.disable'|trans }}</a>
+    <input type="hidden" name="_email_disable_token" value="{{ csrf_token('disable_2fa_email') }}">
+    <button type="submit"
+            formaction="{{ path('bitexpert_sylius_2fa_admin_account_disable_2fa', {type: 'email'}) }}"
+            formmethod="post"
+            class="btn btn-secondary w-100 mt-3">{{ 'bitexpert_sylius_twofactor.admin.form.email.disable'|trans }}</button>
 {% endif %}

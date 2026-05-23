@@ -28,6 +28,14 @@ bitexpert_sylius_2fa_shop_account_setup_2fa_email:
   defaults:
     _controller: 'bitexpert_sylius_2fa.controller.shop::setupEmailAuth'
 
+bitexpert_sylius_2fa_shop_account_disable_2fa:
+    path: /account/disable-2fa/{type}
+    requirements:
+        type: google|email
+    methods: [ POST ]
+    defaults:
+        _controller: 'bitexpert_sylius_2fa.controller.shop::disable2fa'
+
 bitexpert_sylius_2fa_shop_login:
   path: /login/2fa-auth
   defaults:

@@ -2,3 +2,5 @@ bitexpert_sylius_twofactor:
   2fa_setup:
     success: 2FA erfolgreich aktiviert.
     failed: Verifizierungscode ungültig. 2FA konnte nicht aktiviert werden.
+  2fa_disable:
+    success: 2FA wurde erfolgreich deaktiviert.
