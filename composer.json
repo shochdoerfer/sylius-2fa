@@ -10,6 +10,11 @@
             "homepage": "https://www.bitExpert.de"
         }
     ],
+    "keywords": [
+        "sylius",
+        "sylius-plugin",
+        "2fa-auth"
+    ],
     "require": {
         "php": "^8.2",
         "endroid/qr-code-bundle": "^6.0",
