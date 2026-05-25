@@ -11,5 +11,15 @@
             <argument type="service" id="sylius.context.channel" />
             <argument type="service" id="sylius.context.locale" />
         </service>
+
+        <service id="BitExpert\SyliusTwoFactorAuthPlugin\Mailer\SyliusTwoFactorEnabledMailer"
+                 class="BitExpert\SyliusTwoFactorAuthPlugin\Mailer\SyliusTwoFactorEnabledMailer">
+            <argument type="service" id="mailer" />
+            <argument type="service" id="sylius.context.channel" />
+            <argument type="service" id="sylius.context.locale" />
+            <argument type="service" id="logger" />
+            <argument type="service" id="twig" />
+            <argument type="service" id="translator" />
+        </service>
     </services>
 </container>

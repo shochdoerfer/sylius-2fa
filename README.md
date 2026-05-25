@@ -149,7 +149,9 @@ php bin/console doctrine:migrations:migrate
 
 You can run the unit tests with the following command (requires dependency installation):
 
-    ./vendor/bin/phpunit
+```bash
+./vendor/bin/phpunit
+```
 
 ## Contribution
 Feel free to contribute to this module by reporting issues or create some pull requests for improvements.

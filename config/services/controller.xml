@@ -42,6 +42,7 @@
             <argument type="string"  key="$entity">shop_user</argument>
             <argument type="string"  key="$redirectRoute">bitexpert_sylius_2fa_shop_account_2fa_overview</argument>
             <argument type="string"  key="$template">@BitExpertSyliusTwoFactorAuthPlugin/shop/two_factor_setup.html.twig</argument>
+            <argument type="service" key="$twoFactorEnabledMailer" id="BitExpert\SyliusTwoFactorAuthPlugin\Mailer\SyliusTwoFactorEnabledMailer" />
             <tag name="controller.service_arguments" />
         </service>
     </services>

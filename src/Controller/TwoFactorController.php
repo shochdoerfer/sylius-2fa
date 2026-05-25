@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace BitExpert\SyliusTwoFactorAuthPlugin\Controller;
 
 use BitExpert\SyliusTwoFactorAuthPlugin\Entity\TwoFactorAuthInterface;
+use BitExpert\SyliusTwoFactorAuthPlugin\Mailer\SyliusTwoFactorEnabledMailer;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
@@ -58,6 +59,7 @@ final class TwoFactorController extends AbstractController
         private readonly string $entity,
         private readonly string $redirectRoute,
         private readonly string $template,
+        private readonly ?SyliusTwoFactorEnabledMailer $twoFactorEnabledMailer = null,
     ) {
     }
 
@@ -128,6 +130,9 @@ final class TwoFactorController extends AbstractController
                 $resource->setGoogleAuthenticatorSecret($secret);
                 if ($this->googleAuthenticator->checkCode($resource, $code)) {
                     $this->repository->add($resource);
+                    if ($resource->getEmail() !== null) {
+                        $this->twoFactorEnabledMailer?->send2FaEnabledMail($resource->getEmail());
+                    }
                     $this->addFlash('success', 'bitexpert_sylius_twofactor.2fa_setup.success');
 
                     return $this->redirectToRoute($this->redirectRoute);
@@ -136,6 +141,9 @@ final class TwoFactorController extends AbstractController
                 $resource->setEmailAuthCode($secret);
                 if ($code === $resource->getEmailAuthCode()) {
                     $this->repository->add($resource);
+                    if ($resource->getEmail() !== null) {
+                        $this->twoFactorEnabledMailer?->send2FaEnabledMail($resource->getEmail());
+                    }
                     $this->addFlash('success', 'bitexpert_sylius_twofactor.2fa_setup.success');
 
                     return $this->redirectToRoute($this->redirectRoute);

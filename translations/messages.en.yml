@@ -55,3 +55,6 @@ bitexpert_sylius_twofactor:
   email_template:
     subject: Email Auth Code Verification
     message: Use this "%authCode%" code to log into Sylius
+  2fa_enabled_email:
+    subject: Two-Factor Authentication Activated
+    message: Two-factor authentication has been successfully activated for your account.
