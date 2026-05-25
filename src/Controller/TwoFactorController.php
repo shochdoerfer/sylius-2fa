@@ -209,4 +209,29 @@ final class TwoFactorController extends AbstractController
 
         return new Response($result, 200, ['Content-Type' => 'image/png']);
     }
+
+    public function disable2fa(Request $request, string $type): Response
+    {
+        /** @var (UserInterface&TwoFactorAuthInterface)|null $resource */
+        $resource = $this->tokenStorage->getToken()?->getUser();
+        if (!$resource instanceof TwoFactorAuthInterface) {
+            throw $this->createAccessDeniedException();
+        }
+
+        if (!$this->isCsrfTokenValid('disable_2fa_' . $type, $request->request->getString('_' . $type . '_disable_token'))) {
+            throw $this->createAccessDeniedException();
+        }
+
+        if ($type === 'google' && $resource->getGoogleAuthenticatorSecret() !== null) {
+            /** @phpstan-ignore-next-line */
+            $resource->setGoogleAuthenticatorSecret(null);
+        } elseif ($type === 'email' && $resource->isEmailAuthEnabled()) {
+            $resource->disableEmailAuth();
+        }
+
+        $this->repository->add($resource);
+        $this->addFlash('success', 'bitexpert_sylius_twofactor.2fa_disable.success');
+
+        return $this->redirectToRoute($this->redirectRoute);
+    }
 }

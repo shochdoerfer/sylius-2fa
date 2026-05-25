@@ -12,13 +12,19 @@
         {% if customer.getUser().isGoogleAuthenticatorEnabled() == false %}
             <a href="{{ path('bitexpert_sylius_2fa_shop_account_setup_2fa_google') }}" class="btn btn-primary mt-3 me-2">{{ 'bitexpert_sylius_twofactor.shop.form.google.activate'|trans }}</a>
         {% else %}
-            <a href="#" class="btn btn-secondary mt-3 me-2">{{ 'bitexpert_sylius_twofactor.admin.form.google.disable'|trans }}</a>
+            <form method="post" action="{{ path('bitexpert_sylius_2fa_shop_account_disable_2fa', {type: 'google'}) }}" class="d-inline">
+                <input type="hidden" name="_google_disable_token" value="{{ csrf_token('disable_2fa_google') }}">
+                <button type="submit" class="btn btn-secondary mt-3 me-2">{{ 'bitexpert_sylius_twofactor.shop.form.google.disable'|trans }}</button>
+            </form>
         {% endif %}
 
         {% if customer.getUser().isEmailAuthEnabled() == false %}
             <a href="{{ path('bitexpert_sylius_2fa_shop_account_setup_2fa_email') }}" class="btn btn-primary mt-3">{{ 'bitexpert_sylius_twofactor.shop.form.email.activate'|trans }}</a>
         {% else %}
-            <a href="#" class="btn btn-secondary mt-3">{{ 'bitexpert_sylius_twofactor.admin.form.email.disable'|trans }}</a>
+            <form method="post" action="{{ path('bitexpert_sylius_2fa_shop_account_disable_2fa', {type: 'email'}) }}" class="d-inline">
+                <input type="hidden" name="_email_disable_token" value="{{ csrf_token('disable_2fa_email') }}">
+                <button type="submit" class="btn btn-secondary mt-3">{{ 'bitexpert_sylius_twofactor.shop.form.email.disable'|trans }}</button>
+            </form>
         {% endif %}
     </div>
 </div>

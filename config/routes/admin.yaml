@@ -15,6 +15,14 @@ bitexpert_sylius_2fa_admin_setup_2fa_email:
   methods: [ GET, POST, PUT ]
   defaults:
     _controller: 'bitexpert_sylius_2fa.controller.admin::setupEmailAuth'
+    
+bitexpert_sylius_2fa_admin_account_disable_2fa:
+    path: /disable-2fa/{type}
+    requirements:
+        type: google|email
+    methods: [ POST, PUT ]
+    defaults:
+        _controller: 'bitexpert_sylius_2fa.controller.admin::disable2fa'
 
 bitexpert_sylius_2fa_admin_login:
   path: /login/2fa-auth

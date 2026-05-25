@@ -18,4 +18,6 @@ use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface as GoogleTwoFactorInte
 interface TwoFactorAuthInterface extends GoogleTwoFactorInterface, EmailTwoFactorInterface
 {
     public function isTwoFactorActive(): bool;
+
+    public function disableEmailAuth(): void;
 }

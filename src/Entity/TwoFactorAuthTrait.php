@@ -82,4 +82,9 @@ trait TwoFactorAuthTrait
     {
         $this->emailAuthCode = $authCode;
     }
+
+    public function disableEmailAuth(): void
+    {
+        $this->emailAuthCode = null;
+    }
 }
